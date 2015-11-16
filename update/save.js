@@ -5,7 +5,7 @@ var async = require("async");
 var db = require("../config").db;
 var debug = require("debug")("blog:update:save");
 
-exports = {
+module.exports = {
 
     /**
      * 保存文章分类列表
@@ -18,20 +18,34 @@ exports = {
         async.eachSeries(list, function (item, next) {
             //  对每一项进行遍历
 
-            db.query("SELECT * FROM 'class_list' where 'id' = ?", [item.id], function (err, data) {
+            var selectSql = "SELECT * FROM class_list where 'id' = " + item["id"] + "";
+            db.query(selectSql, function (err, data) {
                 //  查询该分类是否存在
 
                 if (err) {
+
+console.log("fuck off");
+
                     return next(err);
                 }
+
                 if (Array.isArray(data) && data.length >= 1) {
                     //  分类已经存在,更新分类
 
-                    db.query("UPDATE 'class_list' SET 'name'=?,'url'=? WHERE 'id'=?", [item.name, item, url, item.id], next);
+                    console.log("fuck you");
+
+                    db.query("UPDATE class_list SET name=?,url=? WHERE id'=?", [item.name, item.url, item.id], next);
                 } else {
                     //  分类不存在,插入一条新数据
 
-                    db.query("INSERT INTO 'class_list'('id','name','url') VALUES(?,?,?)", [item.id, item.name, item, url]);
+                    console.log("fuck!!!");
+
+                    console.log(item.id);
+                    var insertSql = "INSERT INTO class_list(id,name,url) VALUES(" + item["id"] + ",'" + item["name"] + "','" + item["url"] + "')";
+
+                    console.log(insertSql);
+
+                    db.query(insertSql,next);
                 }
             });
         }, callback);

@@ -9,10 +9,6 @@ var debug = require("debug")("blog:update:all");
 var classList;
 var articleList = [];
 
-console.log(read);
-console.log(save);
-console.log(config);
-
 async.series([
 
     /**

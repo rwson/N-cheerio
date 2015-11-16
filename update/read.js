@@ -5,7 +5,7 @@ var request = require("request");
 var cheerio = require("cheerio");
 var debug = require("debug")("blog:update:read");
 
-exports = {
+module.exports = {
     /**
      * 获取文章分类列表
      * @param url       获取的url
@@ -15,6 +15,7 @@ exports = {
         debug("读取文章列表:%s",url);
 
         request(url,function(err,res){
+
             if(err){
                 return callback(err);
             }
@@ -30,11 +31,11 @@ exports = {
                     "name":$me.text().trim(),
                     "url":$me.attr("href")
                 };
-                var s = item.url.match(/acticlelist_\d+_(\d+)_\d\.html/);
+                var s = item.url.match(/articlelist_\d+_(\d+)_\d\.html/g);
                 //  从url中提取分类id
 
                 if(Array.isArray(s)){
-                    item.id = s[1];
+                    item.id = s[0].replace(/articlelist_|\.html/g,"");
                     classList.push(item);
                 }
             });

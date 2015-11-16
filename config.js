@@ -1,16 +1,16 @@
 /**
- * ÍøÂçÅÀ³æMySqlÅäÖÃÎÄ¼ş
+ * ç½‘ç»œçˆ¬è™«MySqlé…ç½®æ–‡ä»¶
  */
 
 var mysql = require("mysql");
 
-exports = {
+module.exports = {
     "db":mysql.createConnection({
-        "host":"127.0.0.1",         //  Êı¾İ¿âµØÖ·
-        "port":3306,                //  Êı¾İ¿â¶Ë¿Ú
-        "database":"sina_blog",     //  Êı¾İ¿âÃû³Æ
-        "user":"root",              //  Êı¾İ¿âÓÃ»§Ãû
-        "password":"root"           //  Êı¾İ¿âÃÜÂë
+        "host":"127.0.0.1",         //  æ•°æ®åº“åœ°å€
+        "port":3306,                //  æ•°æ®åº“ç«¯å£
+        "database":"sina_blog",     //  æ•°æ®åº“åç§°
+        "user":"root",              //  æ•°æ®åº“ç”¨æˆ·å
+        "password":"root"           //  æ•°æ®åº“å¯†ç 
     }),
-    "sinaBlog":"http://blog.sina.com.cn/u/1191258123"      //  ĞÂÀË²©¿ÍµØÖ·
+    "sinaBlog":"http://blog.sina.com.cn/u/1776757314"      //  æ–°æµªåšå®¢åœ°å€
 };
