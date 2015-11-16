@@ -1,5 +1,5 @@
 /**
- * ´æ´¢²©¿ÍµÄ·ÖÀàÁĞ±í¡¢·ÖÀà²©ÎÄÁĞ±í¡¢ÎÄÕÂÏêÏ¸ÄÚÈİ
+ * å­˜å‚¨åšå®¢çš„åˆ†ç±»åˆ—è¡¨ã€åˆ†ç±»åšæ–‡åˆ—è¡¨ã€æ–‡ç« è¯¦ç»†å†…å®¹
  */
 var async = require("async");
 var db = require("../config").db;
@@ -7,28 +7,28 @@ var debug = require("debug")("blog:update:save");
 
 exports = {
     /**
-     * ±£´æÎÄÕÂ·ÖÀàÁĞ±í
-     * @param list      ÎÄÕÂ·ÖÀàÁĞ±í
-     * @param callback  »Øµ÷
+     * ä¿å­˜æ–‡ç« åˆ†ç±»åˆ—è¡¨
+     * @param list      æ–‡ç« åˆ†ç±»åˆ—è¡¨
+     * @param callback  å›è°ƒ
      */
     "classList":function(list,callback){
-        debug("±£´æÎÄÕÂ·ÖÀàÁĞ±í:%d",list.length);
+        debug("ä¿å­˜æ–‡ç« åˆ†ç±»åˆ—è¡¨:%d",list.length);
 
         async.eachSeries(list,function(item,next){
-            //  ¶ÔÃ¿Ò»Ïî½øĞĞ±éÀú
+            //  å¯¹æ¯ä¸€é¡¹è¿›è¡Œéå†
 
             db.query("SELECT * FROM 'class_list' where 'id' = ?",[item.id],function(err,data){
-                //  ²éÑ¯¸Ã·ÖÀàÊÇ·ñ´æÔÚ
+                //  æŸ¥è¯¢è¯¥åˆ†ç±»æ˜¯å¦å­˜åœ¨
 
                 if(err){
                     return next(err);
                 }
                 if(Array.isArray(data) && data.length >= 1){
-                    //  ·ÖÀàÒÑ¾­´æÔÚ,¸üĞÂ·ÖÀà
+                    //  åˆ†ç±»å·²ç»å­˜åœ¨,æ›´æ–°åˆ†ç±»
 
                     db.query("UPDATE 'class_list' SET 'name'=?,'url'=? WHERE 'id'=?",[item.name,item,url,item.id],next);
                 }else{
-                    //  ·ÖÀà²»´æÔÚ,²åÈëÒ»ÌõĞÂÊı¾İ
+                    //  åˆ†ç±»ä¸å­˜åœ¨,æ’å…¥ä¸€æ¡æ–°æ•°æ®
 
                     db.query("INSERT INTO 'class_list'('id','name','url') VALUES(?,?,?)",[item.id,item.name,item,url]);
                 }
@@ -37,13 +37,13 @@ exports = {
     },
 
     /**
-     * ±£´æÎÄÕÂÁĞ±í
-     * @param class_id  ·ÖÀàid
-     * @param list      ÎÄÕÂÁĞ±í
-     * @param callback  »Øµ÷
+     * ä¿å­˜æ–‡ç« åˆ—è¡¨
+     * @param class_id  åˆ†ç±»id
+     * @param list      æ–‡ç« åˆ—è¡¨
+     * @param callback  å›è°ƒ
      */
     "articleList":function(class_id,list,callback){
-        debug("±£´æ²©ÎÄÁĞ±í:%d,%d",class_id,list.length);
+        debug("ä¿å­˜åšæ–‡åˆ—è¡¨:%d,%d",class_id,list.length);
         async.eachSeries(list,function(item,next){
 
 
@@ -51,21 +51,21 @@ exports = {
     },
 
     /**
-     * »ñÈ¡²©ÎÄÏêÏ¸µÄÄÚÈİ
-     * @param url       »ñÈ¡µÄurl
-     * @param callback  »Øµ÷
+     * è·å–åšæ–‡è¯¦ç»†çš„å†…å®¹
+     * @param url       è·å–çš„url
+     * @param callback  å›è°ƒ
      */
     "articleDateil":function(url,callback){
-        debug("»ñÈ¡²©ÎÄÄÚÈİ:%s",url);
+        debug("è·å–åšæ–‡å†…å®¹:%s",url);
         _request(url,function(err,res){
             if(err){
                 return callback(err);
             }
             var $ = cheerio.load(res.body.toString());
-            //  ¸ù¾İÇëÇóµ½µÄÍøÒ³ÄÚÈİ´´½¨DOM¶ÔÏó
+            //  æ ¹æ®è¯·æ±‚åˆ°çš„ç½‘é¡µå†…å®¹åˆ›å»ºDOMå¯¹è±¡
 
             var tags = [];
-            //  ¶¨Òå¿ÕÊı×é,ÓÃÀ´´æ´¢²©ÎÄ±êÇ©
+            //  å®šä¹‰ç©ºæ•°ç»„,ç”¨æ¥å­˜å‚¨åšæ–‡æ ‡ç­¾
 
             $(".blog_tag h3 a").each(function(){
                 var tag = $(this).text().trim();
@@ -75,21 +75,21 @@ exports = {
             });
 
             var content = $(".articalContent").html().trim();
-            //  »ñÈ¡ÎÄÕÂÄÚÈİ
+            //  è·å–æ–‡ç« å†…å®¹
 
             callback(null,{
                 "tags":tags,
                 "content":content
             });
-            //  ·µ»Ø½á¹û
+            //  è¿”å›ç»“æœ
         });
     }
 };
 
 /**
- * ÇëÇóÖ¸¶¨url
- * @param url           ±»ÇëÇóµÄurl
- * @param callback      ÇëÇó³É¹¦µÄ»Øµ÷
+ * è¯·æ±‚æŒ‡å®šurl
+ * @param url           è¢«è¯·æ±‚çš„url
+ * @param callback      è¯·æ±‚æˆåŠŸçš„å›è°ƒ
  * @private
  */
 function _request(url,callback){

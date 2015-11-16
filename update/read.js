@@ -1,5 +1,5 @@
 /**
- * ¶ÁÈ¡²©¿ÍµÄ·ÖÀàÁĞ±í¡¢·ÖÀà²©ÎÄÁĞ±í¡¢ÎÄÕÂÏêÏ¸ÄÚÈİ
+ * è¯»å–åšå®¢çš„åˆ†ç±»åˆ—è¡¨ã€åˆ†ç±»åšæ–‡åˆ—è¡¨ã€æ–‡ç« è¯¦ç»†å†…å®¹
  */
 var request = require("request");
 var cheerio = require("cheerio");
@@ -7,22 +7,22 @@ var debug = require("debug")("blog:update:read");
 
 exports = {
     /**
-     * »ñÈ¡ÎÄÕÂ·ÖÀàÁĞ±í
-     * @param url       »ñÈ¡µÄurl
-     * @param callback  »Øµ÷
+     * è·å–æ–‡ç« åˆ†ç±»åˆ—è¡¨
+     * @param url       è·å–çš„url
+     * @param callback  å›è°ƒ
      */
     "classList":function(url,callback){
-        debug("¶ÁÈ¡ÎÄÕÂÁĞ±í:%s",url);
+        debug("è¯»å–æ–‡ç« åˆ—è¡¨:%s",url);
 
         request(url,function(err,res){
             if(err){
                 return callback(err);
             }
             var $ = cheerio.load(res.body.toString());
-            //  ¸ù¾İÇëÇóµ½µÄÍøÒ³ÄÚÈİ´´½¨DOM¶ÔÏó
+            //  æ ¹æ®è¯·æ±‚åˆ°çš„ç½‘é¡µå†…å®¹åˆ›å»ºDOMå¯¹è±¡
 
             var classList = [];
-            //  ¶¨Òå¿ÕÊı×é,ÓÃÀ´´æ´¢·ÖÀàÁĞ±í
+            //  å®šä¹‰ç©ºæ•°ç»„,ç”¨æ¥å­˜å‚¨åˆ†ç±»åˆ—è¡¨
 
             $(".classList a").each(function(){
                 var $me = $(this);
@@ -31,7 +31,7 @@ exports = {
                     "url":$me.attr("href")
                 };
                 var s = item.url.match(/acticlelist_\d+_(\d+)_\d\.html/);
-                //  ´ÓurlÖĞÌáÈ¡·ÖÀàid
+                //  ä»urlä¸­æå–åˆ†ç±»id
 
                 if(Array.isArray(s)){
                     item.id = s[1];
@@ -40,26 +40,26 @@ exports = {
             });
 
             callback(null,classList);
-            //  ·µ»Ø½á¹û
+            //  è¿”å›ç»“æœ
         });
     },
 
     /**
-     * ¶ÁÈ¡ÎÄÕÂ·ÖÀà²©ÎÄÁĞ±í
-     * @param url       »ñÈ¡µÄurl
-     * @param callback  »Øµ÷
+     * è¯»å–æ–‡ç« åˆ†ç±»åšæ–‡åˆ—è¡¨
+     * @param url       è·å–çš„url
+     * @param callback  å›è°ƒ
      */
     "articleList":function(url,callback){
-        debug("»ñÈ¡²©ÎÄÁĞ±í:%s",url);
+        debug("è·å–åšæ–‡åˆ—è¡¨:%s",url);
         _request(url,function(err,res){
             if(err){
                 return callback(err);
             }
             var $ = cheerio.load(res.body.toString());
-            //  ¸ù¾İÇëÇóµ½µÄÍøÒ³ÄÚÈİ´´½¨DOM¶ÔÏó
+            //  æ ¹æ®è¯·æ±‚åˆ°çš„ç½‘é¡µå†…å®¹åˆ›å»ºDOMå¯¹è±¡
 
             var articleList = [];
-            //  ¶¨Òå¿ÕÊı×é,ÓÃÀ´´æ´¢²©ÎÄÁĞ±í
+            //  å®šä¹‰ç©ºæ•°ç»„,ç”¨æ¥å­˜å‚¨åšæ–‡åˆ—è¡¨
 
             $(".articleList .articleCell").each(function(){
                 var $me = $(this);
@@ -71,7 +71,7 @@ exports = {
                     "time":$time.text().trim()
                 };
                 var s = item.url.match(/blog_([a-zA-Z0-9]+)\.html/);
-                //  ´ÓurlÖĞÌáÈ¡ÎÄÕÂid
+                //  ä»urlä¸­æå–æ–‡ç« id
 
                 if(Array.isArray(s)){
                     item.id = s[1];
@@ -79,9 +79,9 @@ exports = {
                 }
 
                 var nextUrl = $(".SG_pgnext a").attr("href");
-                //  »ñÈ¡ÏÂÒ»Ò³url
+                //  è·å–ä¸‹ä¸€é¡µurl
                 if(nextUrl){
-                    //  Èç¹ûÏÂÒ»Ò³´æÔÚ
+                    //  å¦‚æœä¸‹ä¸€é¡µå­˜åœ¨
                     exports.articleList(nextUrl,function(err,list){
                         if(err){
                             return callback(err);
@@ -97,21 +97,21 @@ exports = {
     },
 
     /**
-     * »ñÈ¡²©ÎÄÏêÏ¸µÄÄÚÈİ
-     * @param url       »ñÈ¡µÄurl
-     * @param callback  »Øµ÷
+     * è·å–åšæ–‡è¯¦ç»†çš„å†…å®¹
+     * @param url       è·å–çš„url
+     * @param callback  å›è°ƒ
      */
     "articleDateil":function(url,callback){
-        debug("»ñÈ¡²©ÎÄÄÚÈİ:%s",url);
+        debug("è·å–åšæ–‡å†…å®¹:%s",url);
         _request(url,function(err,res){
             if(err){
                 return callback(err);
             }
             var $ = cheerio.load(res.body.toString());
-            //  ¸ù¾İÇëÇóµ½µÄÍøÒ³ÄÚÈİ´´½¨DOM¶ÔÏó
+            //  æ ¹æ®è¯·æ±‚åˆ°çš„ç½‘é¡µå†…å®¹åˆ›å»ºDOMå¯¹è±¡
 
             var tags = [];
-            //  ¶¨Òå¿ÕÊı×é,ÓÃÀ´´æ´¢²©ÎÄ±êÇ©
+            //  å®šä¹‰ç©ºæ•°ç»„,ç”¨æ¥å­˜å‚¨åšæ–‡æ ‡ç­¾
 
             $(".blog_tag h3 a").each(function(){
                 var tag = $(this).text().trim();
@@ -121,21 +121,21 @@ exports = {
             });
 
             var content = $(".articalContent").html().trim();
-            //  »ñÈ¡ÎÄÕÂÄÚÈİ
+            //  è·å–æ–‡ç« å†…å®¹
 
             callback(null,{
                 "tags":tags,
                 "content":content
             });
-            //  ·µ»Ø½á¹û
+            //  è¿”å›ç»“æœ
         });
     }
 };
 
 /**
- * ÇëÇóÖ¸¶¨url
- * @param url           ±»ÇëÇóµÄurl
- * @param callback      ÇëÇó³É¹¦µÄ»Øµ÷
+ * è¯·æ±‚æŒ‡å®šurl
+ * @param url           è¢«è¯·æ±‚çš„url
+ * @param callback      è¯·æ±‚æˆåŠŸçš„å›è°ƒ
  * @private
  */
 function _request(url,callback){
