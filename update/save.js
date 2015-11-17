@@ -13,39 +13,25 @@ module.exports = {
      * @param callback  回调
      */
     "classList": function (list, callback) {
-        debug("保存文章分类列表:%d", list.length);
+        console.log("保存文章分类列表:%d", list.length);
 
         async.eachSeries(list, function (item, next) {
             //  对每一项进行遍历
 
-            var selectSql = "SELECT * FROM class_list where 'id' = " + item["id"] + "";
-            db.query(selectSql, function (err, data) {
+            db.query("SELECT * FROM class_list where id = '" + item.id + "'", function (err, data) {
                 //  查询该分类是否存在
-
                 if (err) {
-
-console.log("fuck off");
-
                     return next(err);
                 }
 
                 if (Array.isArray(data) && data.length >= 1) {
                     //  分类已经存在,更新分类
 
-                    console.log("fuck you");
-
-                    db.query("UPDATE class_list SET name=?,url=? WHERE id'=?", [item.name, item.url, item.id], next);
+                    db.query("UPDATE class_list SET name='" + item.name + "',url='" + item.url + "' WHERE id='" + item.id + "'", next);
                 } else {
                     //  分类不存在,插入一条新数据
 
-                    console.log("fuck!!!");
-
-                    console.log(item.id);
-                    var insertSql = "INSERT INTO class_list(id,name,url) VALUES(" + item["id"] + ",'" + item["name"] + "','" + item["url"] + "')";
-
-                    console.log(insertSql);
-
-                    db.query(insertSql,next);
+                    db.query("INSERT INTO class_list(id,name,url) VALUES('" + item.id + "','" + item.name + "','" + item.url + "')",next);
                 }
             });
         }, callback);
@@ -58,7 +44,7 @@ console.log("fuck off");
      * @param callback  回调
      */
     "articleList": function (class_id, list, callback) {
-        debug("保存博文列表:%d,%d", class_id, list.length);
+        console.log("保存博文列表:%d,%d", class_id, list.length);
         async.eachSeries(list, function (item, next) {
             //  遍历每一项
 
@@ -88,7 +74,7 @@ console.log("fuck off");
      * @param callback  回调
      */
     "articleCount": function (class_id, count, callback) {
-        debug("保存文章分类数量:%d,%d", class_id, count);
+        console.log("保存文章分类数量:%d,%d", class_id, count);
 
         db.query("UPDATE　'class_list' set 'count'=? WHERE 'id'=?", [count, class_id], callback);
     },
@@ -100,7 +86,7 @@ console.log("fuck off");
      * @param callback  回调
      */
     "articleTags": function (id, tags, callback) {
-        debug("保存文章分类标签:%s,%s", id, tags);
+        console.log("保存文章分类标签:%s,%s", id, tags);
 
         db.query("DELETE FROM 'article_tag' WHERE 'id'=?", [id], function (err) {
             if (err) {
@@ -127,7 +113,7 @@ console.log("fuck off");
      * @param callback  回调
      */
     "articleDetail": function (id, tags, content, callback) {
-        debug("保存文章内容:%s", id);
+        console.log("保存文章内容:%s", id);
 
         db.query("SELECT 'id' FROM 'article_detail' WHERE 'id'=?", [id], function (err, data) {
                 //  查询文章是否存在

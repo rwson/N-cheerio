@@ -6,13 +6,14 @@ var cheerio = require("cheerio");
 var debug = require("debug")("blog:update:read");
 
 module.exports = {
+
     /**
      * 获取文章分类列表
      * @param url       获取的url
      * @param callback  回调
      */
     "classList":function(url,callback){
-        debug("读取文章列表:%s",url);
+        console.log("读取文章列表:%s",url);
 
         request(url,function(err,res){
 
@@ -51,11 +52,18 @@ module.exports = {
      * @param callback  回调
      */
     "articleList":function(url,callback){
-        debug("获取博文列表:%s",url);
+
+        var _this = this;
+        //  缓存当前对象
+
+        console.log("获取博文列表:%s",url);
         _request(url,function(err,res){
             if(err){
                 return callback(err);
             }
+
+            //console.log(res.body.toString());
+
             var $ = cheerio.load(res.body.toString());
             //  根据请求到的网页内容创建DOM对象
 
@@ -64,13 +72,18 @@ module.exports = {
 
             $(".articleList .articleCell").each(function(){
                 var $me = $(this);
-                var $title = $me.find(".act_title a");
-                var $time = $me.find(".act_tm");
+
+                var $title = $me.find(".atc_title a").eq(0);
+                var $time = $me.find(".atc_tm").eq(0);
+
+                console.log($title.attr("href"));
+
                 var item = {
                     "title":$title.text().trim(),
                     "url":$title.attr("href"),
                     "time":$time.text().trim()
                 };
+
                 var s = item.url.match(/blog_([a-zA-Z0-9]+)\.html/);
                 //  从url中提取文章id
 
@@ -83,7 +96,7 @@ module.exports = {
                 //  获取下一页url
                 if(nextUrl){
                     //  如果下一页存在
-                    exports.articleList(nextUrl,function(err,list){
+                    _this.articleList(nextUrl,function(err,list){
                         if(err){
                             return callback(err);
                         } else{
@@ -103,7 +116,7 @@ module.exports = {
      * @param callback  回调
      */
     "articleDateil":function(url,callback){
-        debug("获取博文内容:%s",url);
+        console.log("获取博文内容:%s",url);
         _request(url,function(err,res){
             if(err){
                 return callback(err);

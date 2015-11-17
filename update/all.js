@@ -68,7 +68,7 @@ async.series([
      * @param done  完成回调
      */
     function(done){
-        debug("重新整理文章列表,并去重");
+        console.log("重新整理文章列表,并去重");
         var articles = {};
         Object.keys(articleList).forEach(function(classId){
             articleList[classId].forEach(function(item){
@@ -93,7 +93,7 @@ async.series([
                     return next(err);
                 }
                 if(exits){
-                    debug("文章已存在:%s",item.url);
+                    console.log("文章已存在:%s",item.url);
                 }
                 read.articleDateil(item,url,function(err,ret){
                     if(err){
