@@ -94,7 +94,7 @@ module.exports = {
 
                 var nextUrl = $(".SG_pgnext a").attr("href");
                 //  获取下一页url
-                if(nextUrl){
+                if(nextUrl && articleList.length < 100){
                     //  如果下一页存在
                     _this.articleList(nextUrl,function(err,list){
                         if(err){

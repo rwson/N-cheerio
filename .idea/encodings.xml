@@ -2,7 +2,6 @@
 <project version="4">
   <component name="Encoding">
     <file url="file://$PROJECT_DIR$/app.js" charset="UTF-8" />
-    <file url="file://$PROJECT_DIR$/list.xls" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/update/all.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/update/read.js" charset="UTF-8" />
     <file url="file://$PROJECT_DIR$/update/save.js" charset="UTF-8" />
